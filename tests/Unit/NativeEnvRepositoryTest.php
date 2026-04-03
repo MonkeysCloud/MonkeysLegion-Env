@@ -57,6 +57,13 @@ class NativeEnvRepositoryTest extends TestCase
         $this->assertSame('', $result);
     }
 
+    public function testGetReturnsNullWhenExplicitlySetAsDefault(): void
+    {
+        $result = $this->repository->get('NONEXISTENT_VAR', null);
+
+        $this->assertNull($result);
+    }
+
     public function testGetBoolReturnsTrueForTruthyValues(): void
     {
         $truthyValues = ['true', 'True', 'TRUE', '(true)', '1', 'yes', 'YES', 'on', 'ON'];

@@ -92,6 +92,22 @@ class EnvManagerTest extends TestCase
         $this->assertSame('test_value', $result);
     }
 
+    public function testGetProxiesToRepositoryWithNullDefault(): void
+    {
+        $loader = $this->createMock(EnvLoaderInterface::class);
+        $repository = $this->createMock(EnvRepositoryInterface::class);
+
+        $repository->expects($this->once())
+            ->method('get')
+            ->with('NONEXISTENT_KEY', null)
+            ->willReturn(null);
+
+        $manager = new EnvManager($loader, $repository);
+        $result = $manager->get('NONEXISTENT_KEY', null);
+
+        $this->assertNull($result);
+    }
+
     public function testGetBoolProxiesToRepository(): void
     {
         $loader = $this->createMock(EnvLoaderInterface::class);

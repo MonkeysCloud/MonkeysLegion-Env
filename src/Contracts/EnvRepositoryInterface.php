@@ -13,11 +13,11 @@ interface EnvRepositoryInterface
      * If the environment variable is not set, it returns the specified default value.
      * 
      * @param string $key The environment variable key.
-     * @param string $default The default value to return if the environment variable is not set
+     * @param string|null $default The default value to return if the environment variable is not set
      * 
-     * @return string The environment variable value or the default value
+     * @return string|null The environment variable value or the default value
      */
-    public function get(string $key, string $default = ''): string;
+    public function get(string $key, ?string $default = ''): ?string;
 
     /**
      * Get an environment variable as a boolean.

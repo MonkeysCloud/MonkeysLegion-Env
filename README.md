@@ -39,9 +39,15 @@ $debug = $manager->getBool('DEBUG', false);
 $port = $manager->getInt('PORT', 8080);
 $timeout = $manager->getFloat('TIMEOUT', 30.0);
 
+// You can also explicitly return null as default
+$apiKey = $manager->get('API_KEY', null);
+if ($apiKey === null) {
+    // Handle missing API key
+}
+
 // Or access the repository if you prefer
 $repo = $manager->getRepository();
-$apiKey = $repo->get('API_KEY');
+$dbUrl = $repo->get('DATABASE_URL');
 ```
 
 ## Environment File Loading
@@ -85,7 +91,7 @@ The main orchestrator for loading and managing environment variables. Provides c
 
 **Proxy Methods (Convenient Direct Access):**
 
-- `get(string $key, string $default = ''): string` - Get a variable as a string
+- `get(string $key, ?string $default = ''): ?string` - Get a variable as a string (nullable)
 - `getBool(string $key, bool $default = false): bool` - Get as boolean
 - `getInt(string $key, int $default = 0): int` - Get as integer
 - `getFloat(string $key, float $default = 0.0): float` - Get as float
@@ -114,7 +120,10 @@ Manages environment variables using PHP's native `$_ENV`, `$_SERVER`, and `geten
 
 **String Access:**
 
-- `get(string $key, string $default = ''): string` - Get a variable as a string
+- `get(string $key, ?string $default = ''): ?string` - Get a variable as a string
+  - Returns the environment variable value or the default
+  - Can return `null` if explicitly set as default: `get('KEY', null)`
+  - Empty string default if not provided: `get('KEY')`
 
 **Typed Access:**
 

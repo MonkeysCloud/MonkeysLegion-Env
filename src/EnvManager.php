@@ -62,11 +62,11 @@ class EnvManager implements EnvBootstrapperInterface
      * Proxies to the repository for convenient access.
      * 
      * @param string $key The environment variable key
-     * @param string $default The default value if not set
+     * @param string|null $default The default value if not set
      * 
-     * @return string
+     * @return string|null
      */
-    public function get(string $key, string $default = ''): string
+    public function get(string $key, ?string $default = ''): ?string
     {
         return $this->repository->get($key, $default);
     }
