@@ -1,0 +1,12 @@
+{
+    "name": "monkeyscloud/monkeyslegion-env",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "MonkeysLegion\\Env\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "require": {}
+}
