@@ -150,4 +150,13 @@ class NativeEnvRepository implements EnvRepositoryInterface
     {
         return $this->resolveEnv($key) !== false;
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function unset(string $key): void
+    {
+        putenv($key);
+        unset($_ENV[$key], $_SERVER[$key]);
+    }
 }

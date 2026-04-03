@@ -152,4 +152,17 @@ class EnvManager implements EnvBootstrapperInterface
     {
         return $this->repository->has($key);
     }
+
+    /**
+     * Unset (remove) the environment variable for the given key.
+     * Proxies to the repository for convenient access.
+     * 
+     * @param string $key The environment variable key to remove
+     * 
+     * @return void
+     */
+    public function unset(string $key): void
+    {
+        $this->repository->unset($key);
+    }
 }

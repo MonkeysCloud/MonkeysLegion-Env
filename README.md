@@ -45,6 +45,14 @@ if ($apiKey === null) {
     // Handle missing API key
 }
 
+// Check if a variable exists
+if ($manager->has('DATABASE_URL')) {
+    $dbUrl = $manager->get('DATABASE_URL');
+}
+
+// Remove a variable
+$manager->unset('TEMP_VALUE');
+
 // Or access the repository if you prefer
 $repo = $manager->getRepository();
 $dbUrl = $repo->get('DATABASE_URL');
@@ -98,6 +106,7 @@ The main orchestrator for loading and managing environment variables. Provides c
 - `set(string $key, string $value): void` - Set a single variable
 - `setMany(array $variables): void` - Set multiple variables
 - `has(string $key): bool` - Check if a variable exists
+- `unset(string $key): void` - Remove a variable
 
 **Usage:**
 
@@ -136,6 +145,7 @@ Manages environment variables using PHP's native `$_ENV`, `$_SERVER`, and `geten
 
 - `set(string $key, string $value): void` - Set a single variable
 - `setMany(array $variables): void` - Set multiple variables at once
+- `unset(string $key): void` - Remove a variable from all environment sources
 
 **Checking:**
 

@@ -181,4 +181,46 @@ class NativeEnvRepositoryTest extends TestCase
     {
         $this->assertFalse($this->repository->has('NONEXISTENT_VAR'));
     }
+
+    public function testUnsetRemovesVariableFromAllSources(): void
+    {
+        // Set a variable
+        $this->repository->set('TEST_VAR', 'value');
+        
+        // Verify it exists
+        $this->assertTrue($this->repository->has('TEST_VAR'));
+        $this->assertSame('value', $_ENV['TEST_VAR']);
+        $this->assertSame('value', $_SERVER['TEST_VAR']);
+        $this->assertSame('value', getenv('TEST_VAR'));
+        
+        // Unset it
+        $this->repository->unset('TEST_VAR');
+        
+        // Verify it's removed from all sources
+        $this->assertFalse($this->repository->has('TEST_VAR'));
+        $this->assertArrayNotHasKey('TEST_VAR', $_ENV);
+        $this->assertArrayNotHasKey('TEST_VAR', $_SERVER);
+        $this->assertFalse(getenv('TEST_VAR'));
+    }
+
+    public function testUnsetDoesNotThrowErrorWhenVariableDoesNotExist(): void
+    {
+        // Should not throw any errors
+        $this->repository->unset('NONEXISTENT_VAR');
+        
+        $this->assertFalse($this->repository->has('NONEXISTENT_VAR'));
+    }
+
+    public function testUnsetAllowsVariableToBeSetAgain(): void
+    {
+        // Set, unset, then set again
+        $this->repository->set('TEST_VAR', 'first');
+        $this->assertSame('first', $this->repository->get('TEST_VAR'));
+        
+        $this->repository->unset('TEST_VAR');
+        $this->assertFalse($this->repository->has('TEST_VAR'));
+        
+        $this->repository->set('TEST_VAR', 'second');
+        $this->assertSame('second', $this->repository->get('TEST_VAR'));
+    }
 }

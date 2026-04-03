@@ -199,4 +199,17 @@ class EnvManagerTest extends TestCase
 
         $this->assertTrue($result);
     }
+
+    public function testUnsetProxiesToRepository(): void
+    {
+        $loader = $this->createMock(EnvLoaderInterface::class);
+        $repository = $this->createMock(EnvRepositoryInterface::class);
+
+        $repository->expects($this->once())
+            ->method('unset')
+            ->with('TEST_KEY');
+
+        $manager = new EnvManager($loader, $repository);
+        $manager->unset('TEST_KEY');
+    }
 }

@@ -76,4 +76,15 @@ interface EnvRepositoryInterface
      * @return bool
      */
     public function has(string $key): bool;
+
+    /**
+     * Unset (remove) the environment variable for the given key.
+     * 
+     * Removes the variable from all environment sources ($_ENV, $_SERVER, and getenv).
+     * 
+     * @param string $key The environment variable key to remove
+     * 
+     * @return void
+     */
+    public function unset(string $key): void;
 }
