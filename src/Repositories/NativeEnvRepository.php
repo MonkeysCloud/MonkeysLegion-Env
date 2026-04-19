@@ -21,7 +21,29 @@ class NativeEnvRepository implements EnvRepositoryInterface
             return false;
         }
         
-        return (string) $value;
+        return self::stripInlineComment((string) $value);
+    }
+
+    /**
+     * Strip inline comments from an environment variable value.
+     *
+     * Handles unquoted values like "7200  # seconds" → "7200".
+     * Does NOT strip from quoted values: '"some # value"' stays intact.
+     * This is a safety net for sources that don't parse comments themselves
+     * (e.g. raw putenv(), Docker env, $_SERVER passthrough).
+     */
+    private static function stripInlineComment(string $value): string
+    {
+        // Skip if the value is quoted (single or double) — comment is part of the value
+        if (preg_match('/^(["\']).*\1$/', $value)) {
+            return $value;
+        }
+
+        // Strip trailing inline comment: "7200  # seconds" → "7200"
+        // Only strip if there's whitespace before the #
+        $stripped = preg_replace('/\s+#\s.*$/', '', $value);
+
+        return $stripped !== null ? trim($stripped) : trim($value);
     }
 
     /**
